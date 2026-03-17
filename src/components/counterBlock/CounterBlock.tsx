@@ -1,5 +1,4 @@
 import { Button } from "../button/Button";
-import { Counter } from "../counter/Counter";
 
 export type CounterBlockProps = {
   count: number;
@@ -7,6 +6,9 @@ export type CounterBlockProps = {
   maxCount: number;
   incCount: () => void;
   resetCount: () => void;
+  isFocusInput: boolean
+  errorMaxValue: boolean
+  errorMinValue: boolean
 };
 
 export const CounterBlock = ({
@@ -15,14 +17,34 @@ export const CounterBlock = ({
   maxCount,
   incCount,
   resetCount,
+  isFocusInput,
+  errorMaxValue,
+  errorMinValue,
 }: CounterBlockProps) => {
   
   return (
-    <div className="container">
-      <Counter count={count} maxCount={maxCount} />
-      <div className="wrap_button">
-        <Button title="inc" disabled={count === maxCount} callBack={incCount} />
-        <Button title="reset" disabled={count === minCount} callBack={resetCount} />
+    <div className="wrap_counter">
+      <div className="container">
+        <div
+          className={`${count !== maxCount ? "counter" : "counter_disabled"}`}
+        >
+          {!isFocusInput && !errorMinValue && !errorMaxValue && <span>{count}</span>}
+          {(errorMinValue || errorMaxValue && isFocusInput) && <span style={{ color: 'red'}}>Error!!!!!</span>}
+          {isFocusInput && !errorMinValue && !errorMaxValue && <span style={{ color: 'white'}}>enter values and press 'set'</span>}
+
+        </div>
+        <div className="wrap_button">
+          <Button
+            title="inc"
+            disabled={count === maxCount || isFocusInput || (errorMinValue || errorMaxValue)}
+            callBack={incCount}
+          />
+          <Button
+            title="reset"
+            disabled={count === minCount}
+            callBack={resetCount}
+          />
+        </div>
       </div>
     </div>
   );

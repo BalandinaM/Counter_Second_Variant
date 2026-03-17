@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import { Button } from './components/button/Button';
-import { Input } from './components/input/Input';
+import { CounterBlock } from './components/counterBlock/CounterBlock';
+import { SettingsBlock } from './components/settingsBlock/SettingsBlock';
 
 const MIN_COUNT_DEFAULT = 0;
 const MAX_COUNT_DEFAULT = 5;
@@ -72,54 +72,28 @@ function App() {
 
 
   return (
-    <div className="wrap_counter">
-      <div className="container">
-        <div
-          className={`${count !== maxCount ? "counter" : "counter_disabled"}`}
-        >
-          {!isFocusInput && <span>{count}</span>}
-          {errorMaxValue || errorMinValue && <span>Error!!!!!</span>}
-          {isFocusInput && !errorMinValue && !errorMaxValue && <span>enter values and press 'set'</span>}
-
-        </div>
-        <div className="wrap_button">
-          <Button
-            title="inc"
-            disabled={count === maxCount || isFocusInput}
-            callBack={incCount}
-          />
-          <Button
-            title="reset"
-            disabled={count === minCount}
-            callBack={resetCount}
-          />
-        </div>
-      </div>
-      <div className="container">
-        <div className="wrap_input">
-          <Input
-            value={newMinCount}
-            valueFriend={newMaxCount}
-            setNewValue={changeMinCountHandler}
-            handleFocus={handleFocus}
-            handleOnBlur={handleOnBlur}
-            error={errorMinValue}
-          />
-          <Input
-            value={newMaxCount}
-            valueFriend={newMinCount}
-            setNewValue={changeMaxCountHandler}
-            handleFocus={handleFocus}
-            handleOnBlur={handleOnBlur}
-            error={errorMaxValue}
-          />
-        </div>
-        <Button
-          title="set"
-          callBack={() => handleSaveSettings(newMinCount, newMaxCount)}
-          disabled={errorMinValue || errorMaxValue}
-        />
-      </div>
+    <div className='wrap_counter'>
+      <CounterBlock
+        count={count}
+        minCount={minCount}
+        maxCount={maxCount}
+        incCount={incCount}
+        resetCount={resetCount}
+        isFocusInput={isFocusInput}
+        errorMaxValue={errorMaxValue}
+        errorMinValue={errorMinValue}
+      />
+      <SettingsBlock 
+        maxCount={newMaxCount}
+        minCount={newMinCount}
+        handleSaveSettings={handleSaveSettings}
+        changeMinCountHandler={changeMinCountHandler}
+        changeMaxCountHandler={changeMaxCountHandler}
+        handleFocus={handleFocus}
+        handleOnBlur={handleOnBlur}
+        errorMinValue={errorMinValue}
+        errorMaxValue={errorMaxValue}
+      />
     </div>
   );
 }

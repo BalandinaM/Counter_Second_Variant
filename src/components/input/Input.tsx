@@ -1,11 +1,11 @@
 
 export type InputProps = {
   value: number;
-  valueFriend: number
+  // valueFriend: number
   setNewValue: (value: number) => void;
   handleFocus: () => void
   handleOnBlur: () => void
-  error?: boolean;
+  error: boolean  
 };
 
 export const Input = ({ value, setNewValue, handleFocus, handleOnBlur, error }: InputProps) => {

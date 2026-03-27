@@ -7,6 +7,7 @@ const MIN_COUNT_DEFAULT = 0;
 const MAX_COUNT_DEFAULT = 5;
 const INCREMENT_DEFAULT = 1;
 
+
 function App() {
   const [count, setCount] = useState(() => {
     const countAsString = localStorage.getItem("counterValue");
@@ -54,11 +55,17 @@ function App() {
 
   const changeMinCountHandler = (value: number) => {
     setNewMinCount(value);
+    if (errorMaxValue) {
+      setErrorMaxValue(value <= newMinCount || value < 0)
+    }
     setErrorMinValue(value >= newMaxCount || value < 0)
   };
 
    const changeMaxCountHandler = (value: number) => {
     setNewMaxCount(value);
+    if (errorMinValue) {
+      setErrorMinValue(value >= newMaxCount || value < 0)
+    }
     setErrorMaxValue(value <= newMinCount || value < 0)
   };
 

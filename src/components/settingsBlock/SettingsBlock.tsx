@@ -4,7 +4,7 @@ import { Input } from "../input/Input";
 export type SettingsBlockProps = {
   maxCount: number;
   minCount: number;
-  handleSaveSettings: (minCountValue: number, maxCountValue: number) => void;
+  handleSaveSettings: (newMinCount: number, newMaxCount: number) => void;
   changeMinCountHandler: (value: number) => void
   changeMaxCountHandler: (value: number) => void
   handleFocus: () => void

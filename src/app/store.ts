@@ -1,16 +1,30 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
-import { counterReducer } from '../model/counter-reducer';
- 
-// объединение reducer'ов с помощью combineReducers
-const rootReducer = combineReducers({
-  counter: counterReducer,
-})
- 
+import {configureStore} from '@reduxjs/toolkit'
+import { counterReducer, initialState } from '../model/counter-reducer';
+import { loadState, saveCount, saveState } from '../localStorage';
+import throttle from 'lodash/throttle';
+
+const persistedState = loadState();
 // создание store
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    counter: counterReducer,
+  },
+  preloadedState: persistedState 
+    ? { 
+        counter: {
+          ...initialState,  // сначала все значения по умолчанию
+          ...persistedState // затем перезаписываем загруженными
+        }
+      }
+    : undefined
 })
  
+  store.subscribe(throttle(() => {
+    const {count, maxCount, minCount} = store.getState().counter
+    saveState(minCount, maxCount, count)
+  }, 1000))
+
+
 // автоматическое определение типа всего объекта состояния
 export type RootState = ReturnType<typeof store.getState>
 // автоматическое определение типа метода dispatch

@@ -2,14 +2,12 @@ import { useState } from 'react'
 import './App.css'
 import { CounterBlock } from '../components/counterBlock/CounterBlock';
 import { SettingsBlock } from '../components/settingsBlock/SettingsBlock';
-import { useDispatch, useSelector } from 'react-redux';
 import { incrementCountAC, resetCountAC, saveNewSettingsAC, setErrorMaxValueAC, setErrorMinValueAC, type CounterType } from '../model/counter-reducer';
+import { useAppSelector } from '../common/hooks/useAppSelector';
+import { selectCount, selectErrorMaxCount, selectErrorMinCount, selectMaxCount, selectMinCount } from '../model/counter-selectors';
+import { useAppDispatch } from '../common/hooks/useAppDispatch';
+import { useSelector } from 'react-redux';
 import type { RootState } from './store';
-
-// const MIN_COUNT_DEFAULT = 0;
-// const MAX_COUNT_DEFAULT = 5;
-// const INCREMENT_DEFAULT = 1;
-
 
 function App() {
   // const [count, setCount] = useState(() => {
@@ -34,35 +32,22 @@ function App() {
   //   return MIN_COUNT_DEFAULT;
   // })
  
-  // const [errorMinValue, setErrorMinValue] = useState(false);
-  // const [errorMaxValue, setErrorMaxValue] = useState(false);
-  const count = useSelector<RootState, CounterType['count']>(state => state.counter.count)
-  const minCount = useSelector<RootState, CounterType['minCount']>(state => state.counter.minCount)
-  const maxCount = useSelector<RootState, CounterType['maxCount']>(state => state.counter.maxCount)
-  const errorMinValue = useSelector<RootState, CounterType['errorMinValue']>(state => state.counter.errorMinValue)
-  const errorMaxValue = useSelector<RootState, CounterType['errorMaxValue']>(state => state.counter.errorMaxValue)
+  const count = useAppSelector(selectCount)
+  const minCount = useAppSelector(selectMinCount)
+  const maxCount = useAppSelector(selectMaxCount)
+  const errorMinValue = useAppSelector(selectErrorMinCount)
+  const errorMaxValue = useAppSelector(selectErrorMaxCount)
   const [newMaxCount, setNewMaxCount] = useState(maxCount);
   const [newMinCount, setNewMinCount] = useState(minCount);
   const [isFocusInput, setIsFocusInput] = useState(false);
-  const dispatch = useDispatch()
-
-  // const incCount = () => {
-  //   if (count < maxCount) {
-  //     dispatch(incrementCountAC())
-  //   }
-  //   // setCount(count + INCREMENT_DEFAULT)
-  // }
+  const dispatch = useAppDispatch()
 
   const incCount = () => (count < maxCount) ? dispatch(incrementCountAC()) : count
   const resetCount = () => dispatch(resetCountAC())
-    // setCount(minCount)
   
 
   const handleSaveSettings = (newMinCount: number, newMaxCount: number) => {
     dispatch(saveNewSettingsAC({newMinCount, newMaxCount}))
-    // setMinCount(minCountValue)
-    // setMaxCount(maxCountValue)
-    // setCount(minCountValue)
     // localStorage.setItem("counterValue", JSON.stringify(minCountValue))
     // localStorage.setItem("maxCounterValue", JSON.stringify(maxCountValue))
     // localStorage.setItem("minCounterValue", JSON.stringify(minCountValue))
@@ -72,7 +57,6 @@ function App() {
     setNewMinCount(value);
     if (errorMaxValue) {
       dispatch(setErrorMaxValueAC(value <= newMinCount || value < 0))
-      // setErrorMaxValue(value <= newMinCount || value < 0)
     }
     dispatch(setErrorMinValueAC(value >= newMaxCount || value < 0))
   };
@@ -81,10 +65,8 @@ function App() {
     setNewMaxCount(value);
     if (errorMinValue) {
       dispatch(setErrorMinValueAC(value >= newMaxCount || value < 0))
-      // setErrorMinValue(value >= newMaxCount || value < 0)
     }
     dispatch(setErrorMaxValueAC(value <= newMinCount || value < 0))
-    // setErrorMaxValue(value <= newMinCount || value < 0)
   };
 
    const handleFocus = () => {

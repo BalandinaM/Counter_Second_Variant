@@ -1,7 +1,7 @@
 
 export type InputProps = {
   value: number;
-  setNewValue: (value: number | undefined) => void;
+  setNewValue: (value: number) => void;
   handleFocus: () => void
   handleOnBlur: () => void
   error: boolean  
@@ -22,6 +22,7 @@ export const Input = ({ value, setNewValue, handleFocus, handleOnBlur, error }: 
     <input
       style={{ background: error ? "red" : "black" }}
       type="number"
+      min={0}  
       value={value}
       onChange={changeValueHandler}
       className="input"

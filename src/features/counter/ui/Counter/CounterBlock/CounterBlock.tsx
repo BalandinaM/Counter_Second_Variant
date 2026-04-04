@@ -1,26 +1,21 @@
-import { Button } from "../button/Button";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { incrementCountAC, resetCountAC, type CounterType } from "@/features/counter/model/counter-reducer";
+import { Button } from "@/common/components/Button/Button";
 
 export type CounterBlockProps = {
-  count: number;
-  minCount: number;
-  maxCount: number;
-  incCount: () => void;
-  resetCount: () => void;
+  counter: CounterType;
   isFocusInput: boolean
-  errorMaxValue: boolean
-  errorMinValue: boolean
 };
 
 export const CounterBlock = ({
-  count,
-  minCount,
-  maxCount,
-  incCount,
-  resetCount,
+  counter,
   isFocusInput,
-  errorMaxValue,
-  errorMinValue,
 }: CounterBlockProps) => {
+  const {count, minCount, maxCount, errorMinValue, errorMaxValue} = counter
+  const dispatch = useAppDispatch();
+
+  const incCount = () => count < maxCount ? dispatch(incrementCountAC()) : count
+  const resetCount = () => dispatch(resetCountAC())
   
   const isResetButtonDisabled = count === minCount
   const isIncrementButtonDisabled = count === maxCount || isFocusInput || (errorMinValue || errorMaxValue)

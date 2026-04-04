@@ -14,8 +14,8 @@ export type CounterType = {
 
 export const initialState = {
     count: MIN_COUNT_DEFAULT,
-    maxCount: MAX_COUNT_DEFAULT,
     minCount: MIN_COUNT_DEFAULT,
+    maxCount: MAX_COUNT_DEFAULT,
     errorMinValue: false,
     errorMaxValue: false,
 }
@@ -45,6 +45,6 @@ export const counterReducer = createReducer(initialState, builder => {
             state.errorMinValue = action.payload
         })
         .addCase(setErrorMaxValueAC, (state, action) => {
-            state.errorMinValue = action.payload
+            state.errorMaxValue = action.payload
         })
 })

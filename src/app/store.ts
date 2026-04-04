@@ -1,10 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit'
-import { counterReducer, initialState } from '../model/counter-reducer';
-import { loadState, saveCount, saveState } from '../localStorage';
-import throttle from 'lodash/throttle';
+import { counterReducer, initialState } from '@/features/counter/model/counter-reducer';
+import { throttle } from 'lodash';
+import { loadState, saveState } from '@/features/counter/model/localStorage';
 
 const persistedState = loadState();
-// создание store
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -18,7 +18,7 @@ export const store = configureStore({
       }
     : undefined
 })
- 
+
   store.subscribe(throttle(() => {
     const {count, maxCount, minCount} = store.getState().counter
     saveState(minCount, maxCount, count)
